@@ -1,12 +1,13 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from "react-router";
 
-export const Logo = () => {
+export const Logo = (props: { small?: boolean }) => {
+  const { small } = props;
   const navigate = useNavigate();
   return (
     <div
-      className='font-extrabold text-xl items-center flex w-fit gap-1.5 cursor-pointer'
+      className={`font-extrabold ${small ? "text-sm gap-1" : "text-xl gap-1.5"} items-center flex w-fit  cursor-pointer`}
       onClick={() => {
-        navigate('/');
+        navigate("/");
       }}
     >
       <span className='text-white'>KINO</span>

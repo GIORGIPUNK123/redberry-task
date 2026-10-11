@@ -5,8 +5,11 @@ import { ModalInput } from "./ModalInput";
 export const LoginModal = (props: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  onLogin: (email: string, password: string) => Promise<boolean>;
+  onSwitchToRegister: () => void;
+  error: string | null;
 }) => {
-  const { isOpen, setIsOpen } = props;
+  const { isOpen, setIsOpen, onLogin, onSwitchToRegister, error } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   if (!isOpen) return null;
@@ -48,12 +51,19 @@ export const LoginModal = (props: {
             onChange={setPassword}
           />
         </div>
+        {error && (
+          <p role='alert' aria-live='polite' className='mt-3 text-xs text-[#EC3013]'>
+            {error}
+          </p>
+        )}
         <div className='mt-8'>
           <AuthButton
             disabled={!canLogIn}
             text='Log in'
-            onClick={() => {
-              console.log("Login attempt", { email, password });
+            onClick={async () => {
+              const loggedIn = await onLogin(email, password);
+
+              if (loggedIn) setIsOpen(false);
             }}
           />
         </div>
@@ -61,7 +71,11 @@ export const LoginModal = (props: {
           <span className='text-[#A9A9A9] text-sm font-normal '>
             Don't have an account?
           </span>
-          <button className='cursor-pointer text-[#EC3013] font-extrabold ml-2'>
+          <button
+            type='button'
+            onClick={onSwitchToRegister}
+            className='cursor-pointer text-[#EC3013] font-extrabold ml-2'
+          >
             Sign Up
           </button>
         </div>

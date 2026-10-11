@@ -3,12 +3,13 @@ import { Badge } from "./Badge";
 
 export const HeroOverlay = (props: {
   heading: string;
-  age: number;
+  age: string;
   duration: number;
   description: string;
   isPremiere: boolean;
+  formats: string[];
 }) => {
-  const { heading, age, duration, description, isPremiere } = props;
+  const { heading, age, duration, description, isPremiere, formats } = props;
   return (
     <div className='mt-81.25 ml-16.75 flex flex-col absolute z-2 w-135 '>
       <Badge isRed={isPremiere} text='PREMIERE · WEEK OF 15 SEPT' />
@@ -17,9 +18,10 @@ export const HeroOverlay = (props: {
       </h2>
       <div className={`flex gap-2 ${isPremiere ? "my-3.75" : "mb-3.75"}`}>
         <Badge text={age} isRed={true} />
-        <Badge text={duration} />
-        <Badge text={duration} />
-        <Badge text={duration} />
+        <Badge text={`${duration} Min`} />
+        {formats.map((format) => (
+          <Badge key={format} text={format} />
+        ))}
       </div>
       <p className='font-normal  text-sm text-white leading-[1.3]'>
         {description}

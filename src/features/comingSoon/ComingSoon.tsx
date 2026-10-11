@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
+import { api } from "../../api/axios";
+import type { Movie, MoviesResponse } from "../../types/movies";
 import { ComingSoonCard } from "./ComingSoonCard";
 
 export const ComingSoon = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    api
+      .get<MoviesResponse>("/movies/coming-soon")
+      .then((response) => setMovies(response.data.data));
+  }, []);
+
   return (
     <div className='mx-17.5 mt-8 relative'>
       <div className='flex items-center justify-between mb-6'>
@@ -9,14 +20,19 @@ export const ComingSoon = () => {
           See All
         </span>
       </div>
-      <div className='flex flex-nowrap gap-4.25 '>
-        <ComingSoonCard
-          title='Movie 1'
-          genre='Action'
-          runtimeMinutes={120}
-          age={12}
-          posterUrl='https://react.dev/images/docs/react-devtools-extension.png'
-        />
+      <div className='flex flex-nowrap gap-4.25 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden'>
+        {movies.map((movie) => (
+          <ComingSoonCard
+            key={movie.id}
+            title={movie.title}
+            genre={movie.genres[0]?.name ?? movie.kind}
+            runtimeMinutes={movie.runtimeMinutes}
+            age={movie.ageRating.code}
+            posterUrl={movie.posterUrl}
+            releaseDate={movie.releaseDate}
+            slug={movie.slug}
+          />
+        ))}
         <div className='absolute inset-y-0 right-0 w-full pointer-events-none bg-linear-to-l from-[#070C1C] from-0% to-transparent to-20%'></div>
       </div>
     </div>

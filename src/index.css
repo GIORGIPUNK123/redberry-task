@@ -2,3 +2,25 @@
 body {
   background-color: #070c1c;
 }
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+* {
+  box-sizing: border-box;
+}
+
+button:not(:disabled),
+a,
+[role="button"],
+select,
+input[type="checkbox"] {
+  cursor: pointer;
+}
